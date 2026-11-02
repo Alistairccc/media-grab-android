@@ -1,0 +1,41 @@
+# ---- Internal files (kept locally, never published) ----
+/CLAUDE.md
+/design/
+/docs/design/
+
+# TODO: remove after the remote repository exists and OWNER/REPO is filled in.
+/.github/
+
+# ---- Android / Gradle ----
+.gradle/
+.kotlin/
+build/
+/app/build/
+/local.properties
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# ---- IDE / OS ----
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---- Signing ----
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+
+# ---- Logs / temp ----
+*.log
+*.hprof

@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.jar binary
+*.jks binary
+*.keystore binary
+
+*.kt linguist-language=Kotlin
+*.kts linguist-language=Kotlin

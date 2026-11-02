@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MediaGrab</string>
+
+    <string name="paste">粘贴</string>
+    <string name="paste_hint">粘贴抖音 / B站分享链接</string>
+    <string name="parsing">解析中…</string>
+    <string name="invalid_link">没有找到抖音或B站链接</string>
+    <string name="unsupported_platform">暂不支持这个平台</string>
+    <string name="unsupported_content">暂不支持图集或合集</string>
+    <string name="parse_failed">解析失败，请稍后重试</string>
+    <string name="no_stream">没有可用的视频流</string>
+
+    <string name="quality">画质</string>
+    <string name="no_watermark">无水印</string>
+    <string name="bili_quality_note">未登录画质以平台实际提供为准</string>
+
+    <string name="save">保存到相册</string>
+    <string name="saved">已保存 · 打开相册</string>
+    <string name="downloading">下载中</string>
+    <string name="cancel">取消</string>
+    <string name="retry">重试</string>
+    <string name="download_failed">下载失败，请检查网络</string>
+    <string name="storage_full">存储空间不足</string>
+
+    <string name="view">查看</string>
+
+    <string name="about">关于</string>
+    <string name="close">关闭</string>
+    <string name="more">更多</string>
+    <string name="app_version">版本 %1$s</string>
+    <string name="compliance_note">仅用于个人备份已获授权的内容。请遵守平台条款与著作权法。</string>
+    <string name="license_note">Apache-2.0</string>
+
+    <string name="empty_hint">复制分享链接，点上方「粘贴」</string>
+    <string name="empty_support">支持 抖音 / 哔哩哔哩 单条视频</string>
+    <string name="platform_douyin">抖音</string>
+    <string name="platform_bilibili">B站</string>
+    <string name="speed_mb_s">%1$.1f MB/s</string>
+    <string name="eta_seconds">预计 %1$d 秒</string>
+    <string name="size_mb">%1$.1f MB</string>
+    <string name="about_title">关于 MediaGrab</string>
+    <string name="loading">加载中…</string>
+
+    <string name="notification_channel">下载</string>
+    <string name="notification_preparing">准备下载…</string>
+    <string name="notification_progress">%1$d%% · %2$.1f MB/s</string>
+    <string name="notification_done">已保存到相册</string>
+    <string name="notification_failed">下载失败</string>
+    <string name="notification_cancel">取消</string>
+</resources>

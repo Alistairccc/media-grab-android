@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="noir_bg">#08080B</color>
+    <color name="noir_surface">#111117</color>
+    <color name="noir_text">#F4F4F7</color>
+    <color name="noir_accent">#FE2C55</color>
+    <color name="noir_accent_2">#25F4EE</color>
+    <color name="ic_launcher_background">#08080B</color>
+</resources>
