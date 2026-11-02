@@ -1,5 +1,7 @@
 # MediaGrab
 
+[![Android CI](https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml/badge.svg)](https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml)
+
 A minimal Android downloader for single Douyin / Bilibili videos.
 复制分享链接 → 手动粘贴 → 解析 → 保存到系统相册。
 

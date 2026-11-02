@@ -3,9 +3,6 @@
 /design/
 /docs/design/
 
-# TODO: remove after the remote repository exists and OWNER/REPO is filled in.
-/.github/
-
 # ---- Android / Gradle ----
 .gradle/
 .kotlin/

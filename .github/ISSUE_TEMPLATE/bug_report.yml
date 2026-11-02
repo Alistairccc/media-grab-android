@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a reproducible problem in MediaGrab
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not include cookies, tokens, private
+        links, or other sensitive data.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Copy a share link
+        2. Paste it in MediaGrab
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: MediaGrab version
+      placeholder: 0.3.0
+    validations:
+      required: true
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version and device
+      placeholder: Android 14, Pixel 7
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste logcat output if available. Remove sensitive values.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues for duplicates.
+          required: true
+        - label: This report contains no cookies, tokens, or private links.
+          required: true
