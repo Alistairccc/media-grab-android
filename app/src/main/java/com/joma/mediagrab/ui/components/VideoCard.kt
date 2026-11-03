@@ -122,7 +122,7 @@ fun VideoCard(
                 onClick = onQualityClick,
             )
             when {
-                isDone -> SavedButton()
+                isDone -> SavedStatus()
                 isDownloading ->
                     DownloadProgress(
                         percent = percent,
@@ -318,14 +318,12 @@ private fun SaveButton(onSave: () -> Unit) {
 }
 
 @Composable
-private fun SavedButton() {
+private fun SavedStatus() {
     Row(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(14.dp))
-                .clip(RoundedCornerShape(14.dp)),
+                .padding(vertical = 12.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -338,7 +336,7 @@ private fun SavedButton() {
         Spacer(Modifier.width(8.dp))
         Text(
             text = stringResource(R.string.saved),
-            style = AppType.button,
+            style = AppType.meta,
             color = MaterialTheme.colorScheme.onSurface,
         )
     }

@@ -13,7 +13,7 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 ## 三步完成
 
 1. **复制**：在抖音或 B 站复制视频分享链接
-2. **粘贴**：打开 MediaGrab，点「粘贴」
+2. **粘贴或输入**：打开 MediaGrab，点「粘贴」；也可以直接在输入框里输入链接
 3. **保存**：确认视频信息后点「保存到相册」
 
 下载在后台进行，切到其他 App 也不会中断；完成后可以在系统相册的 `Movies/MediaGrab` 中找到文件。
@@ -22,6 +22,7 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 
 - **抖音**：解析无水印单文件视频，清晰度以接口返回为准（实测 1080P）
 - **哔哩哔哩**：单条视频，带音轨 MP4；未登录画质以平台实际提供为准（实测单条 720P）
+- **两种输入**：一键粘贴分享链接，或手动输入后点「解析链接」
 - **保存到相册**：直接写入 `Movies/MediaGrab`，不需要存储权限
 - **后台下载**：前台服务 + 通知进度，支持取消
 - **真实封面**：解析后显示视频封面，加载失败时回退 NOIR 渐变占位
@@ -70,9 +71,11 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 **可以批量下载吗？**
 不支持。当前只处理单条视频，避免变成批量抓取工具。
 
-## 安装
+## 下载
 
-目前暂未在 GitHub Releases 提供正式安装包，可以从源码构建：
+从 [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) 下载最新 APK（当前 `v0.3.0`，Android 10+）。
+
+### 从源码构建
 
 ```bash
 git clone https://github.com/Alistairccc/media-grab-android.git

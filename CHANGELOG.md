@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Redesigned adaptive app icon (Media Stack) with a themed monochrome layer.
+- Link input is editable; paste still parses in one tap, manual input uses
+  the new `解析链接` action or the keyboard Go key.
+- Completion now shows only `已保存完成`; removed the non-functional
+  gallery/view actions.
+
 ## [0.3.0] - 2026-11-02
 
 ### Added

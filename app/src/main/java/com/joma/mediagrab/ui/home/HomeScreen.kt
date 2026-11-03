@@ -76,17 +76,13 @@ fun HomeScreen(viewModel: HomeViewModel) {
             ) == PackageManager.PERMISSION_GRANTED
     val snackbarHostState = remember { SnackbarHostState() }
     val savedMessage = stringResource(R.string.saved)
-    val viewLabel = stringResource(R.string.view)
 
     var showQuality by remember { mutableStateOf(false) }
     var showAbout by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         if (state is HomeUiState.Done) {
-            snackbarHostState.showSnackbar(
-                message = savedMessage,
-                actionLabel = viewLabel,
-            )
+            snackbarHostState.showSnackbar(savedMessage)
         }
     }
 
@@ -114,10 +110,18 @@ fun HomeScreen(viewModel: HomeViewModel) {
             LinkInput(
                 link = link,
                 enabled = state !is HomeUiState.Parsing && state !is HomeUiState.Downloading,
+                showParse =
+                    link.isNotBlank() &&
+                        state !is HomeUiState.Parsing &&
+                        state !is HomeUiState.Downloading &&
+                        state !is HomeUiState.Ready &&
+                        state !is HomeUiState.Done,
+                onTextChange = viewModel::onLinkChange,
                 onPaste = {
                     val text = runCatching { readClipboard(context) }.getOrNull()
                     viewModel.onPaste(text)
                 },
+                onParse = viewModel::onParse,
             )
             Spacer(Modifier.height(13.dp))
             Box(Modifier.weight(1f)) {

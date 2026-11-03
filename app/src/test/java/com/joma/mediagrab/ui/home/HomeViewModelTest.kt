@@ -64,6 +64,49 @@ class HomeViewModelTest {
         }
 
     @Test
+    fun parseTypedLink() =
+        runTest(dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onLinkChange("https://www.bilibili.com/video/BV1egpo6GEH3")
+
+            assertTrue(viewModel.uiState.value is HomeUiState.Idle)
+            assertEquals(
+                "https://www.bilibili.com/video/BV1egpo6GEH3",
+                viewModel.link.value,
+            )
+
+            viewModel.onParse()
+            assertTrue(viewModel.uiState.value is HomeUiState.Parsing)
+            advanceUntilIdle()
+            assertTrue(viewModel.uiState.value is HomeUiState.Ready)
+        }
+
+    @Test
+    fun parseInvalidTextKeepsItAndShowsError() =
+        runTest(dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onLinkChange("not a link")
+
+            viewModel.onParse()
+
+            assertEquals(AppError.InvalidLink, (viewModel.uiState.value as HomeUiState.Failed).error)
+            assertEquals("not a link", viewModel.link.value)
+        }
+
+    @Test
+    fun editingAfterReadyClearsTheStaleResult() =
+        runTest(dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onPaste("https://v.douyin.com/abc123/")
+            advanceUntilIdle()
+            assertTrue(viewModel.uiState.value is HomeUiState.Ready)
+
+            viewModel.onLinkChange("https://v.douyin.com/new/")
+
+            assertTrue(viewModel.uiState.value is HomeUiState.Idle)
+        }
+
+    @Test
     fun saveShowsDownloadingThenDone() =
         runTest(dispatcher) {
             val viewModel = viewModel()

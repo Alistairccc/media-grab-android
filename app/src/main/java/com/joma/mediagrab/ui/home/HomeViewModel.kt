@@ -35,13 +35,35 @@ class HomeViewModel(
         }
     }
 
+    fun onLinkChange(text: String) {
+        if (_uiState.value is HomeUiState.Downloading || _uiState.value is HomeUiState.Parsing) {
+            return
+        }
+        _link.value = text
+        if (_uiState.value !is HomeUiState.Idle) {
+            _uiState.value = HomeUiState.Idle
+        }
+    }
+
+    fun onParse() {
+        if (_uiState.value is HomeUiState.Downloading || _uiState.value is HomeUiState.Parsing) {
+            return
+        }
+        val url = LinkParser.extractFirstSupported(_link.value)
+        if (url == null) {
+            _uiState.value = HomeUiState.Failed(AppError.InvalidLink)
+            return
+        }
+        _link.value = url
+        parse(url)
+    }
+
     fun onPaste(text: String?) {
         if (_uiState.value is HomeUiState.Downloading) {
             return
         }
         val url = text?.let(LinkParser::extractFirstSupported)
         if (url == null) {
-            _link.value = ""
             _uiState.value = HomeUiState.Failed(AppError.InvalidLink)
             return
         }
