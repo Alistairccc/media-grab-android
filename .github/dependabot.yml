@@ -15,6 +15,26 @@ updates:
       coil:
         patterns:
           - "io.coil-kt.coil3*"
+    # Major upgrades need a coordinated AGP / Gradle / compileSdk / Kotlin bump.
+    ignore:
+      - dependency-name: "androidx.*"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "com.android.tools.build:gradle"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "gradle"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "org.jetbrains.kotlin*"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "io.coil-kt.coil3*"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "com.squareup.okhttp3:okhttp"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: github-actions
     directory: "/"
