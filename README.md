@@ -1,14 +1,19 @@
-# MediaGrab
+<p align="center">
+  <img src="docs/images/icon.png" width="96" alt="MediaGrab icon">
+</p>
 
-[![Android CI](https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml/badge.svg)](https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Android](https://img.shields.io/badge/Android-10%2B-3DDC84?logo=android&logoColor=white)](#)
+<h1 align="center">MediaGrab</h1>
 
-**复制分享链接 → 输入 → 解析 → 保存到相册。**
+<p align="center">
+  <a href="https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml"><img src="https://github.com/Alistairccc/media-grab-android/actions/workflows/android.yml/badge.svg" alt="Android CI"></a>
+  <a href="https://github.com/Alistairccc/media-grab-android/releases/latest"><img src="https://img.shields.io/github/v/release/Alistairccc/media-grab-android" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License"></a>
+  <img src="https://img.shields.io/badge/Android-10%2B-3DDC84?logo=android&logoColor=white" alt="Android 10+">
+</p>
+
+<p align="center"><strong>复制分享链接 → 输入 → 解析 → 保存到相册。</strong></p>
 
 MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音和哔哩哔哩的**单条视频**。不登录、不读取账号数据、不接管账号，只做一件事：把你有权保存的视频放进系统相册。
-
-> 📷 界面截图与录屏正在制作中，后续补充到这里。
 
 ## 三步完成
 
@@ -22,25 +27,12 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 
 - **抖音**：解析无水印单文件视频，清晰度以接口返回为准（实测 1080P）
 - **哔哩哔哩**：单条视频，带音轨 MP4；未登录画质以平台实际提供为准（实测单条 720P）
-- **直接输入**：在输入框中输入或长按粘贴分享链接，点「解析链接」
+- **直接输入**：在输入框中输入或长按粘贴分享链接，点右侧「解析链接」或键盘 Go
 - **保存到相册**：直接写入 `Movies/MediaGrab`，不需要存储权限
 - **后台下载**：前台服务 + 通知进度，支持取消
 - **真实封面**：解析后显示视频封面，加载失败时回退 NOIR 渐变占位
+- **关于页**：版本、开源许可与 GitHub 仓库入口
 - **干净**：无广告、无登录、无账号体系、无数据上传
-
-## 界面预览
-
-<!--
-配图 / 录屏完成后，把图片放到 docs/images/ 并替换这里，例如：
-
-| 空态 | 解析结果 | 下载中 |
-|---|---|---|
-| ![](docs/images/empty.png) | ![](docs/images/ready.png) | ![](docs/images/downloading.png) |
-
-也可以放一段 GIF 或视频链接。
--->
-
-截图与录屏制作中。
 
 ## 支持范围
 
@@ -73,7 +65,11 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 
 ## 下载
 
-从 [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) 下载最新 APK（当前 `v0.3.0`，Android 10+）。
+从 [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) 下载最新 APK（当前 `v0.3.1`，Android 10+）。
+
+直接下载：[MediaGrab-0.3.1.apk](https://github.com/Alistairccc/media-grab-android/releases/download/v0.3.1/MediaGrab-0.3.1.apk)
+
+版本变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 ### 从源码构建
 
@@ -116,13 +112,6 @@ Kotlin · Jetpack Compose · Material 3 · OkHttp · Coroutines · Coil · Timbe
 - B 站：`x/web-interface/view` + `x/player/playurl`
 - 下载：MediaStore `IS_PENDING` + 前台服务
 - 最低 Android 10，targetSdk 36
-
-## 参与贡献
-
-- 开发与提交流程见 [CONTRIBUTING.md](CONTRIBUTING.md)
-- 行为准则见 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- 安全问题请按 [SECURITY.md](SECURITY.md) 私下报告
-- 版本变更见 [CHANGELOG.md](CHANGELOG.md)
 
 ## 合规
 
