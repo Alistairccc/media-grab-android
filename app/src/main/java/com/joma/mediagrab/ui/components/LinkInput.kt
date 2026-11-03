@@ -2,10 +2,7 @@ package com.joma.mediagrab.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +20,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,9 +47,8 @@ const val PARSE_BUTTON_TAG = "parse_button"
 fun LinkInput(
     link: String,
     enabled: Boolean,
-    showParse: Boolean,
+    parseEnabled: Boolean,
     onTextChange: (String) -> Unit,
-    onPaste: () -> Unit,
     onParse: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -74,104 +69,78 @@ fun LinkInput(
                 },
         )
 
-    Column(modifier = modifier.fillMaxWidth()) {
-        Row(
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(54.dp)
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(16.dp))
+                .padding(start = 14.dp, end = 9.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_link),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(17.dp),
+        )
+        Spacer(Modifier.width(10.dp))
+        BasicTextField(
+            value = link,
+            onValueChange = onTextChange,
+            enabled = enabled,
+            singleLine = true,
+            textStyle = textStyle,
+            cursorBrush = SolidColor(NoirAccent),
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Go,
+                ),
+            keyboardActions = KeyboardActions(onGo = { submit() }),
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .height(54.dp)
-                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(16.dp))
-                    .padding(start = 14.dp, end = 9.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_link),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(17.dp),
-            )
-            Spacer(Modifier.width(10.dp))
-            BasicTextField(
-                value = link,
-                onValueChange = onTextChange,
-                enabled = enabled,
-                singleLine = true,
-                textStyle = textStyle,
-                cursorBrush = SolidColor(NoirAccent),
-                keyboardOptions =
-                    KeyboardOptions(
-                        keyboardType = KeyboardType.Uri,
-                        imeAction = ImeAction.Go,
-                    ),
-                keyboardActions = KeyboardActions(onGo = { submit() }),
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .testTag(LINK_INPUT_TAG),
-                decorationBox = { inner ->
-                    Box(contentAlignment = Alignment.CenterStart) {
-                        if (link.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.input_hint),
-                                style = AppType.body,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                        inner()
+                    .weight(1f)
+                    .testTag(LINK_INPUT_TAG),
+            decorationBox = { inner ->
+                Box(contentAlignment = Alignment.CenterStart) {
+                    if (link.isEmpty()) {
+                        Text(
+                            text = stringResource(R.string.input_hint),
+                            style = AppType.body,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
-                },
+                    inner()
+                }
+            },
+        )
+        Spacer(Modifier.width(8.dp))
+        Button(
+            onClick = submit,
+            enabled = enabled && parseEnabled,
+            shape = RoundedCornerShape(10.dp),
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = NoirAccent.copy(alpha = 0.22f),
+                    contentColor = Color.White,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            contentPadding = PaddingValues(horizontal = 13.dp, vertical = 0.dp),
+            modifier =
+                Modifier
+                    .height(36.dp)
+                    .testTag(PARSE_BUTTON_TAG),
+        ) {
+            Text(
+                text = stringResource(R.string.parse),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
             )
-            Spacer(Modifier.width(8.dp))
-            Button(
-                onClick = {
-                    focusManager.clearFocus()
-                    keyboard?.hide()
-                    onPaste()
-                },
-                enabled = enabled,
-                shape = RoundedCornerShape(10.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = NoirAccent.copy(alpha = 0.14f),
-                        contentColor = Color(0xFFFF6B86),
-                        disabledContainerColor = NoirAccent.copy(alpha = 0.06f),
-                        disabledContentColor = NoirAccent.copy(alpha = 0.35f),
-                    ),
-                contentPadding = PaddingValues(horizontal = 13.dp, vertical = 0.dp),
-                modifier = Modifier.height(36.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.paste),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
-        if (showParse) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                Text(
-                    text = stringResource(R.string.parse),
-                    style = AppType.meta,
-                    color =
-                        if (enabled) {
-                            NoirAccent
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    modifier =
-                        Modifier
-                            .testTag(PARSE_BUTTON_TAG)
-                            .minimumInteractiveComponentSize()
-                            .clickable(enabled = enabled) { submit() }
-                            .padding(horizontal = 8.dp),
-                )
-            }
         }
     }
 }

@@ -1,13 +1,12 @@
 package com.joma.mediagrab.ui.home
 
 import android.Manifest
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +36,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,13 +46,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.joma.mediagrab.BuildConfig
 import com.joma.mediagrab.R
-import com.joma.mediagrab.ui.components.EmptyState
 import com.joma.mediagrab.ui.components.ErrorBanner
 import com.joma.mediagrab.ui.components.LinkInput
 import com.joma.mediagrab.ui.components.QualitySheet
@@ -60,6 +60,8 @@ import com.joma.mediagrab.ui.components.VideoCard
 import com.joma.mediagrab.ui.theme.AppType
 import com.joma.mediagrab.ui.theme.NoirAccent
 import java.util.Locale
+
+private const val GITHUB_URL = "https://github.com/Alistairccc/media-grab-android"
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
@@ -110,23 +112,19 @@ fun HomeScreen(viewModel: HomeViewModel) {
             LinkInput(
                 link = link,
                 enabled = state !is HomeUiState.Parsing && state !is HomeUiState.Downloading,
-                showParse =
+                parseEnabled =
                     link.isNotBlank() &&
                         state !is HomeUiState.Parsing &&
                         state !is HomeUiState.Downloading &&
                         state !is HomeUiState.Ready &&
                         state !is HomeUiState.Done,
                 onTextChange = viewModel::onLinkChange,
-                onPaste = {
-                    val text = runCatching { readClipboard(context) }.getOrNull()
-                    viewModel.onPaste(text)
-                },
                 onParse = viewModel::onParse,
             )
             Spacer(Modifier.height(13.dp))
             Box(Modifier.weight(1f)) {
                 when (val current = state) {
-                    HomeUiState.Idle -> EmptyState()
+                    HomeUiState.Idle -> Unit
                     HomeUiState.Parsing -> ParsingState()
                     is HomeUiState.Ready ->
                         VideoCard(
@@ -178,13 +176,10 @@ fun HomeScreen(viewModel: HomeViewModel) {
                         )
 
                     is HomeUiState.Failed ->
-                        Column(Modifier.fillMaxSize()) {
-                            ErrorBanner(
-                                error = current.error,
-                                onRetry = viewModel::onRetry,
-                            )
-                            EmptyState(Modifier.weight(1f))
-                        }
+                        ErrorBanner(
+                            error = current.error,
+                            onRetry = viewModel::onRetry,
+                        )
                 }
             }
         }
@@ -278,6 +273,7 @@ private fun ParsingState() {
 
 @Composable
 private fun AboutDialog(onDismiss: () -> Unit) {
+    val uriHandler = LocalUriHandler.current
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.about_title)) },
@@ -298,6 +294,34 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                     style = AppType.monoSm,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .minimumInteractiveComponentSize()
+                            .clickable { uriHandler.openUri(GITHUB_URL) }
+                            .padding(vertical = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(R.string.github_repo),
+                            style = AppType.meta,
+                            color = NoirAccent,
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            text = "↗",
+                            style = AppType.meta,
+                            color = NoirAccent,
+                        )
+                    }
+                    Text(
+                        text = GITHUB_URL.removePrefix("https://"),
+                        style = AppType.monoSm,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         },
         confirmButton = {
@@ -307,15 +331,4 @@ private fun AboutDialog(onDismiss: () -> Unit) {
         },
         containerColor = MaterialTheme.colorScheme.surface,
     )
-}
-
-private fun readClipboard(context: Context): String? {
-    val clipboard =
-        context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-            ?: return null
-    val clip = clipboard.primaryClip ?: return null
-    if (clip.itemCount == 0) {
-        return null
-    }
-    return clip.getItemAt(0).coerceToText(context)?.toString()
 }

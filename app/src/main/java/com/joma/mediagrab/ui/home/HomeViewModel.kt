@@ -58,19 +58,6 @@ class HomeViewModel(
         parse(url)
     }
 
-    fun onPaste(text: String?) {
-        if (_uiState.value is HomeUiState.Downloading) {
-            return
-        }
-        val url = text?.let(LinkParser::extractFirstSupported)
-        if (url == null) {
-            _uiState.value = HomeUiState.Failed(AppError.InvalidLink)
-            return
-        }
-        _link.value = url
-        parse(url)
-    }
-
     fun onRetry() {
         if (_uiState.value is HomeUiState.Downloading) {
             return

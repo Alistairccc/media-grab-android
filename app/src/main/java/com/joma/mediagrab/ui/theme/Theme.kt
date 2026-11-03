@@ -10,7 +10,7 @@ private val NoirColors =
         primary = NoirAccent,
         onPrimary = Color.White,
         secondary = NoirAccent2,
-        onSecondary = NoirBg,
+        onSecondary = NoirOnAccent,
         background = NoirBg,
         onBackground = NoirText,
         surface = NoirSurface,
@@ -19,7 +19,7 @@ private val NoirColors =
         onSurfaceVariant = NoirMuted,
         outline = NoirBorder,
         error = NoirError,
-        onError = NoirBg,
+        onError = NoirOnAccent,
     )
 
 @Composable

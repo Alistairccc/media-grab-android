@@ -42,19 +42,25 @@ class HomeViewModelTest {
     fun invalidLinkShowsError() =
         runTest(dispatcher) {
             val viewModel = viewModel()
-            viewModel.onPaste("not a link")
+            viewModel.onLinkChange("not a link")
+
+            viewModel.onParse()
+
             val state = viewModel.uiState.value
             assertTrue(state is HomeUiState.Failed)
             assertEquals(AppError.InvalidLink, (state as HomeUiState.Failed).error)
-            assertEquals("", viewModel.link.value)
+            assertEquals("not a link", viewModel.link.value)
         }
 
     @Test
     fun validLinkParsesToReady() =
         runTest(dispatcher) {
             val viewModel = viewModel()
-            viewModel.onPaste("https://v.douyin.com/abc123/")
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+
+            viewModel.onParse()
             advanceUntilIdle()
+
             val state = viewModel.uiState.value
             assertTrue(state is HomeUiState.Ready)
             assertEquals(
@@ -97,7 +103,8 @@ class HomeViewModelTest {
     fun editingAfterReadyClearsTheStaleResult() =
         runTest(dispatcher) {
             val viewModel = viewModel()
-            viewModel.onPaste("https://v.douyin.com/abc123/")
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+            viewModel.onParse()
             advanceUntilIdle()
             assertTrue(viewModel.uiState.value is HomeUiState.Ready)
 
@@ -110,7 +117,8 @@ class HomeViewModelTest {
     fun saveShowsDownloadingThenDone() =
         runTest(dispatcher) {
             val viewModel = viewModel()
-            viewModel.onPaste("https://v.douyin.com/abc123/")
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+            viewModel.onParse()
             advanceUntilIdle()
             viewModel.onSave()
             assertTrue(viewModel.uiState.value is HomeUiState.Downloading)
@@ -127,7 +135,8 @@ class HomeViewModelTest {
     fun cancelReturnsToReady() =
         runTest(dispatcher) {
             val viewModel = viewModel()
-            viewModel.onPaste("https://v.douyin.com/abc123/")
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+            viewModel.onParse()
             advanceUntilIdle()
             viewModel.onSave()
             advanceUntilIdle()

@@ -2,8 +2,7 @@
 <resources>
     <string name="app_name">MediaGrab</string>
 
-    <string name="paste">粘贴</string>
-    <string name="input_hint">粘贴或输入抖音 / B站链接</string>
+    <string name="input_hint">输入抖音 / B站链接</string>
     <string name="parse">解析链接</string>
     <string name="parsing">解析中…</string>
     <string name="invalid_link">没有找到抖音或B站链接</string>
@@ -30,9 +29,8 @@
     <string name="app_version">版本 %1$s</string>
     <string name="compliance_note">仅用于个人备份已获授权的内容。请遵守平台条款与著作权法。</string>
     <string name="license_note">Apache-2.0</string>
+    <string name="github_repo">GitHub 仓库</string>
 
-    <string name="empty_hint">复制分享链接，或直接输入链接</string>
-    <string name="empty_support">支持 抖音 / 哔哩哔哩 单条视频</string>
     <string name="platform_douyin">抖音</string>
     <string name="platform_bilibili">B站</string>
     <string name="speed_mb_s">%1$.1f MB/s</string>

@@ -1,16 +1,15 @@
 package com.joma.mediagrab.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.joma.mediagrab.core.model.MediaInfo
 import com.joma.mediagrab.core.model.Platform
 import com.joma.mediagrab.core.model.Stream
@@ -51,7 +50,7 @@ class HomeScreenTest {
     private fun viewModel() = HomeViewModel(MediaRepository(FakeParser()), downloadController)
 
     @Test
-    fun emptyStateShowsInputAndHint() {
+    fun emptyStateShowsOnlyTheInputHint() {
         val viewModel = viewModel()
         composeRule.setContent {
             MediaGrabTheme {
@@ -59,18 +58,23 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("粘贴或输入抖音 / B站链接").assertExists()
-        composeRule.onNodeWithText("复制分享链接，或直接输入链接").assertExists()
+        composeRule.onNodeWithText("输入抖音 / B站链接").assertExists()
+        assertTrue(
+            composeRule
+                .onAllNodesWithText("复制分享链接，或直接输入链接")
+                .fetchSemanticsNodes()
+                .isEmpty(),
+        )
+        assertTrue(
+            composeRule
+                .onAllNodesWithText("支持 抖音 / 哔哩哔哩 单条视频")
+                .fetchSemanticsNodes()
+                .isEmpty(),
+        )
     }
 
     @Test
-    fun pasteShowsResultCard() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(
-            ClipData.newPlainText("link", "https://v.douyin.com/abc123/"),
-        )
-
+    fun aboutDialogShowsGithubRepositoryLink() {
         val viewModel = viewModel()
         composeRule.setContent {
             MediaGrabTheme {
@@ -78,9 +82,30 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("粘贴").performClick()
-        waitForResultCard()
-        composeRule.onNodeWithText("720P · 无水印").assertExists()
+        composeRule.onNodeWithContentDescription("更多").performClick()
+        composeRule.onNodeWithText("关于").performClick()
+
+        composeRule.onNodeWithText("GitHub 仓库").assertExists()
+        composeRule
+            .onNodeWithText("github.com/Alistairccc/media-grab-android")
+            .assertExists()
+    }
+
+    @Test
+    fun parseButtonIsDisabledUntilTextIsEntered() {
+        val viewModel = viewModel()
+        composeRule.setContent {
+            MediaGrabTheme {
+                HomeScreen(viewModel = viewModel)
+            }
+        }
+
+        composeRule.onNodeWithTag(PARSE_BUTTON_TAG).assertIsNotEnabled()
+
+        composeRule.onNodeWithTag(LINK_INPUT_TAG).performTextInput(
+            "https://www.bilibili.com/video/BV1egpo6GEH3",
+        )
+        composeRule.onNodeWithTag(PARSE_BUTTON_TAG).assertIsEnabled()
     }
 
     @Test

@@ -12,7 +12,6 @@ import com.joma.mediagrab.core.model.MediaInfo
 import com.joma.mediagrab.core.model.Platform
 import com.joma.mediagrab.core.model.Stream
 import com.joma.mediagrab.core.result.AppError
-import com.joma.mediagrab.ui.components.EmptyState
 import com.joma.mediagrab.ui.components.ErrorBanner
 import com.joma.mediagrab.ui.components.VideoCard
 import com.joma.mediagrab.ui.theme.MediaGrabTheme
@@ -39,18 +38,6 @@ private val previewMedia =
                 Stream("480P", "https://example.com/480.mp4", sizeBytes = 6_200_000),
             ),
     )
-
-@Preview(name = "Empty", widthDp = 390, heightDp = 844, showBackground = true, backgroundColor = 0xFF08080B)
-@Composable
-private fun EmptyPreview() {
-    MediaGrabTheme {
-        EmptyState(
-            Modifier
-                .fillMaxSize()
-                .background(NoirBg),
-        )
-    }
-}
 
 @Preview(name = "Ready", widthDp = 390, heightDp = 844, showBackground = true, backgroundColor = 0xFF08080B)
 @Composable

@@ -6,13 +6,26 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- The About dialog links to the GitHub repository.
+
 ### Changed
 
 - Redesigned adaptive app icon (Media Stack) with a themed monochrome layer.
-- Link input is editable; paste still parses in one tap, manual input uses
-  the new `解析链接` action or the keyboard Go key.
+- Lightened the page background to `#24292E`, with input, card, sheet, and
+  dialog surfaces at `#2F363D` / `#373E47` for clearer separation.
+- Increased the inline parse button contrast with an accent tint, white label,
+  and a neutral disabled state.
+- Link input remains editable; removed the custom paste button. Links are
+  typed or pasted through the system long-press menu, then parsed with the
+  `解析链接` button inside the input field or the keyboard Go key.
 - Completion now shows only `已保存完成`; removed the non-functional
   gallery/view actions.
+
+### Removed
+
+- Empty-state illustration and its two hint lines; the idle area is now blank.
 
 ## [0.3.0] - 2026-11-02
 
