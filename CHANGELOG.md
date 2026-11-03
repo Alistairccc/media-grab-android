@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-03
+
 ### Added
 
 - The About dialog links to the GitHub repository.
