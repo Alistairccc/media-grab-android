@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.joma.mediagrab.R
 import com.joma.mediagrab.ui.theme.AppType
 import com.joma.mediagrab.ui.theme.NoirAccent
+import com.joma.mediagrab.ui.theme.NoirAccentDeep
 
 const val LINK_INPUT_TAG = "link_input"
 const val PARSE_BUTTON_TAG = "parse_button"
@@ -138,7 +139,7 @@ fun LinkInput(
                     )
                 } else {
                     ButtonDefaults.buttonColors(
-                        containerColor = NoirAccent.copy(alpha = 0.22f),
+                        containerColor = NoirAccentDeep,
                         contentColor = Color.White,
                         disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,

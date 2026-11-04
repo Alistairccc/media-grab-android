@@ -19,7 +19,7 @@ All notable changes to this project are documented here. The format follows
 - Redesigned adaptive app icon (Media Stack) with a themed monochrome layer.
 - Lightened the page background to `#24292E`, with input, card, sheet, and
   dialog surfaces at `#2F363D` / `#373E47` for clearer separation.
-- Increased the inline parse button contrast with an accent tint, white label,
+- Increased the inline parse button contrast with a deeper red, white label,
   and a neutral disabled state.
 - Link input remains editable; removed the custom paste button. Links are
   typed or pasted through the system long-press menu, then parsed with the
