@@ -118,8 +118,10 @@ fun HomeScreen(viewModel: HomeViewModel) {
                         state !is HomeUiState.Downloading &&
                         state !is HomeUiState.Ready &&
                         state !is HomeUiState.Done,
+                clearMode = state is HomeUiState.Ready || state is HomeUiState.Done,
                 onTextChange = viewModel::onLinkChange,
                 onParse = viewModel::onParse,
+                onClear = viewModel::onClear,
             )
             Spacer(Modifier.height(13.dp))
             Box(Modifier.weight(1f)) {

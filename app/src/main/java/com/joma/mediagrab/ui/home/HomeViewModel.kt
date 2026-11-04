@@ -42,13 +42,26 @@ class HomeViewModel(
         _link.value = text
         if (_uiState.value !is HomeUiState.Idle) {
             _uiState.value = HomeUiState.Idle
+            downloadController.reset()
         }
+    }
+
+    fun onClear() {
+        if (_uiState.value is HomeUiState.Downloading) {
+            return
+        }
+        parseJob?.cancel()
+        parseJob = null
+        _link.value = ""
+        _uiState.value = HomeUiState.Idle
+        downloadController.reset()
     }
 
     fun onParse() {
         if (_uiState.value is HomeUiState.Downloading || _uiState.value is HomeUiState.Parsing) {
             return
         }
+        downloadController.reset()
         val url = LinkParser.extractFirstSupported(_link.value)
         if (url == null) {
             _uiState.value = HomeUiState.Failed(AppError.InvalidLink)

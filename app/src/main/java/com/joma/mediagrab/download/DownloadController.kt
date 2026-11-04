@@ -13,4 +13,6 @@ interface DownloadController {
     )
 
     fun cancel()
+
+    fun reset()
 }

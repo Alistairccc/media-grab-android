@@ -48,8 +48,10 @@ fun LinkInput(
     link: String,
     enabled: Boolean,
     parseEnabled: Boolean,
+    clearMode: Boolean,
     onTextChange: (String) -> Unit,
     onParse: () -> Unit,
+    onClear: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
@@ -58,6 +60,11 @@ fun LinkInput(
         focusManager.clearFocus()
         keyboard?.hide()
         onParse()
+    }
+    val clear = {
+        focusManager.clearFocus()
+        keyboard?.hide()
+        onClear()
     }
     val textStyle =
         (if (link.isEmpty()) AppType.body else AppType.monoMd).copy(
@@ -120,16 +127,23 @@ fun LinkInput(
         )
         Spacer(Modifier.width(8.dp))
         Button(
-            onClick = submit,
-            enabled = enabled && parseEnabled,
+            onClick = if (clearMode) clear else submit,
+            enabled = if (clearMode) enabled else enabled && parseEnabled,
             shape = RoundedCornerShape(10.dp),
             colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = NoirAccent.copy(alpha = 0.22f),
-                    contentColor = Color.White,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
+                if (clearMode) {
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                    )
+                } else {
+                    ButtonDefaults.buttonColors(
+                        containerColor = NoirAccent.copy(alpha = 0.22f),
+                        contentColor = Color.White,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                },
             contentPadding = PaddingValues(horizontal = 13.dp, vertical = 0.dp),
             modifier =
                 Modifier
@@ -137,7 +151,7 @@ fun LinkInput(
                     .testTag(PARSE_BUTTON_TAG),
         ) {
             Text(
-                text = stringResource(R.string.parse),
+                text = stringResource(if (clearMode) R.string.clear else R.string.parse),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
             )

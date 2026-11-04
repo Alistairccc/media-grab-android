@@ -45,6 +45,8 @@ class HomeScreenTest {
             ) = Unit
 
             override fun cancel() = Unit
+
+            override fun reset() = Unit
         }
 
     private fun viewModel() = HomeViewModel(MediaRepository(FakeParser()), downloadController)
@@ -122,6 +124,33 @@ class HomeScreenTest {
         )
         composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
         waitForResultCard()
+    }
+
+    @Test
+    fun clearActionResetsParsedResult() {
+        val viewModel = viewModel()
+        composeRule.setContent {
+            MediaGrabTheme {
+                HomeScreen(viewModel = viewModel)
+            }
+        }
+
+        composeRule.onNodeWithTag(LINK_INPUT_TAG).performTextInput(
+            "https://www.bilibili.com/video/BV1egpo6GEH3",
+        )
+        composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
+        waitForResultCard()
+
+        composeRule.onNodeWithText("清空").assertExists()
+        composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
+
+        composeRule.onNodeWithText("输入抖音 / B站链接").assertExists()
+        assertTrue(
+            composeRule
+                .onAllNodesWithText("凌晨四点的城市，原来是这样一点点苏醒的｜4K 延时记录")
+                .fetchSemanticsNodes()
+                .isEmpty(),
+        )
     }
 
     @Test

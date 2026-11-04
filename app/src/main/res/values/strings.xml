@@ -4,6 +4,7 @@
 
     <string name="input_hint">输入抖音 / B站链接</string>
     <string name="parse">解析链接</string>
+    <string name="clear">清空</string>
     <string name="parsing">解析中…</string>
     <string name="invalid_link">没有找到抖音或B站链接</string>
     <string name="unsupported_platform">暂不支持这个平台</string>

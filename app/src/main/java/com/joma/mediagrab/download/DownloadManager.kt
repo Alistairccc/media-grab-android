@@ -94,6 +94,18 @@ class DownloadManager(
         }
     }
 
+    override fun reset() {
+        if (_state.value is DownloadState.Running) {
+            return
+        }
+        Timber.d("Download state reset")
+        generation++
+        pending = null
+        job?.cancel()
+        job = null
+        _state.value = DownloadState.Idle
+    }
+
     private data class PendingDownload(
         val media: MediaInfo,
         val stream: Stream,

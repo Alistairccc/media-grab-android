@@ -132,6 +132,45 @@ class HomeViewModelTest {
         }
 
     @Test
+    fun clearAfterDoneResetsInputAndDownloadState() =
+        runTest(dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+            viewModel.onParse()
+            advanceUntilIdle()
+            viewModel.onSave()
+            advanceUntilIdle()
+            controller.complete()
+            advanceUntilIdle()
+            assertTrue(viewModel.uiState.value is HomeUiState.Done)
+
+            viewModel.onClear()
+
+            assertTrue(viewModel.uiState.value is HomeUiState.Idle)
+            assertEquals("", viewModel.link.value)
+            assertTrue(controller.state.value is DownloadState.Idle)
+        }
+
+    @Test
+    fun editingAfterDoneClearsTheCompletedDownloadState() =
+        runTest(dispatcher) {
+            val viewModel = viewModel()
+            viewModel.onLinkChange("https://v.douyin.com/abc123/")
+            viewModel.onParse()
+            advanceUntilIdle()
+            viewModel.onSave()
+            advanceUntilIdle()
+            controller.complete()
+            advanceUntilIdle()
+            assertTrue(viewModel.uiState.value is HomeUiState.Done)
+
+            viewModel.onLinkChange("https://v.douyin.com/new/")
+
+            assertTrue(viewModel.uiState.value is HomeUiState.Idle)
+            assertTrue(controller.state.value is DownloadState.Idle)
+        }
+
+    @Test
     fun cancelReturnsToReady() =
         runTest(dispatcher) {
             val viewModel = viewModel()
@@ -167,6 +206,10 @@ class HomeViewModelTest {
         override fun cancel() {
             val running = _state.value as? DownloadState.Running ?: return
             _state.value = DownloadState.Cancelled(running.media, running.stream)
+        }
+
+        override fun reset() {
+            _state.value = DownloadState.Idle
         }
 
         fun complete() {

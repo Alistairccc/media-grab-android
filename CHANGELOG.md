@@ -10,6 +10,8 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- The link field action becomes `清空` after parsing or saving; it clears the
+  link, result card, and stale download state without deleting the saved file.
 - The About dialog links to the GitHub repository.
 
 ### Changed
@@ -28,6 +30,11 @@ All notable changes to this project are documented here. The format follows
 ### Removed
 
 - Empty-state illustration and its two hint lines; the idle area is now blank.
+
+### Fixed
+
+- Clearing or editing a completed result now resets the download manager state,
+  so old results no longer reappear after reopening the page.
 
 ## [0.3.0] - 2026-11-02
 

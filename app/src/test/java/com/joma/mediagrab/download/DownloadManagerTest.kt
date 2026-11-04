@@ -81,6 +81,56 @@ class DownloadManagerTest {
         }
 
     @Test
+    fun `reset clears a completed state`() =
+        runTest {
+            val manager =
+                manager(
+                    downloader =
+                        Downloader { _, _ ->
+                            flow {
+                                emit(DownloadProgress(percent = 100))
+                            }
+                        },
+                )
+
+            manager.start(media, stream)
+            manager.execute()
+            advanceUntilIdle()
+            assertTrue(manager.state.value is DownloadState.Completed)
+
+            manager.reset()
+
+            assertTrue(manager.state.value is DownloadState.Idle)
+        }
+
+    @Test
+    fun `reset does not interrupt a running download`() =
+        runTest {
+            val manager =
+                manager(
+                    downloader =
+                        Downloader { _, _ ->
+                            flow {
+                                emit(DownloadProgress(percent = 10))
+                                awaitCancellation()
+                            }
+                        },
+                )
+
+            manager.start(media, stream)
+            manager.execute()
+            runCurrent()
+            assertTrue(manager.state.value is DownloadState.Running)
+
+            manager.reset()
+
+            assertTrue(manager.state.value is DownloadState.Running)
+
+            manager.cancel()
+            advanceUntilIdle()
+        }
+
+    @Test
     fun `download failure is reported`() =
         runTest {
             val manager =
