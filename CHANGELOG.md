@@ -6,12 +6,27 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-## [0.3.1] - 2026-11-03
+## [0.3.2] - 2026-11-04
 
 ### Added
 
 - The link field action becomes `清空` after parsing or saving; it clears the
   link, result card, and stale download state without deleting the saved file.
+
+### Changed
+
+- Increased the inline parse button contrast with a solid deep red (`#C2183F`),
+  white label, and a neutral disabled state.
+
+### Fixed
+
+- Clearing or editing a completed result now resets the download manager state,
+  so old results no longer reappear after reopening the page.
+
+## [0.3.1] - 2026-11-03
+
+### Added
+
 - The About dialog links to the GitHub repository.
 
 ### Changed
@@ -19,7 +34,7 @@ All notable changes to this project are documented here. The format follows
 - Redesigned adaptive app icon (Media Stack) with a themed monochrome layer.
 - Lightened the page background to `#24292E`, with input, card, sheet, and
   dialog surfaces at `#2F363D` / `#373E47` for clearer separation.
-- Increased the inline parse button contrast with a deeper red, white label,
+- Increased the inline parse button contrast with an accent tint, white label,
   and a neutral disabled state.
 - Link input remains editable; removed the custom paste button. Links are
   typed or pasted through the system long-press menu, then parsed with the
@@ -30,11 +45,6 @@ All notable changes to this project are documented here. The format follows
 ### Removed
 
 - Empty-state illustration and its two hint lines; the idle area is now blank.
-
-### Fixed
-
-- Clearing or editing a completed result now resets the download manager state,
-  so old results no longer reappear after reopening the page.
 
 ## [0.3.0] - 2026-11-02
 
