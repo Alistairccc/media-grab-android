@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- TikTok single-video parsing through the public video page, covering
+  `/video/`, `/v/`, and `/embed/` links plus `vm.tiktok.com` and
+  `vt.tiktok.com` short links. The visitor session cookies issued by the page
+  request are forwarded to the media CDN, which rejects cookie-less downloads.
+
 ## [0.3.2] - 2026-11-04
 
 ### Added

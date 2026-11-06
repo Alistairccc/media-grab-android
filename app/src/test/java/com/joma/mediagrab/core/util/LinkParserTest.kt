@@ -29,5 +29,16 @@ class LinkParserTest {
     fun acceptsSubdomains() {
         assertTrue(LinkParser.isSupported("https://www.douyin.com/video/123"))
         assertTrue(LinkParser.isSupported("https://www.bilibili.com/video/BV1xx411c7mD"))
+        assertTrue(LinkParser.isSupported("https://vm.tiktok.com/ZMabc123/"))
+        assertTrue(LinkParser.isSupported("https://www.tiktok.com/@user/video/123"))
+    }
+
+    @Test
+    fun extractsTikTokUrlFromShareText() {
+        val text = "Watch this https://www.tiktok.com/@user/video/6718335390845095173?is_from_webapp=1"
+        assertEquals(
+            "https://www.tiktok.com/@user/video/6718335390845095173?is_from_webapp=1",
+            LinkParser.extractFirstSupported(text),
+        )
     }
 }

@@ -15,6 +15,7 @@ object LinkParser {
             "bilibili.com",
             "www.bilibili.com",
             "b23.tv",
+            "tiktok.com",
         )
 
     fun extractFirstSupported(text: String): String? =

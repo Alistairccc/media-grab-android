@@ -14,6 +14,7 @@ import com.joma.mediagrab.parser.BilibiliParser
 import com.joma.mediagrab.parser.CompositeParser
 import com.joma.mediagrab.parser.DouyinParser
 import com.joma.mediagrab.parser.Parser
+import com.joma.mediagrab.parser.TikTokParser
 import com.joma.mediagrab.signing.WebViewDouyinSessionProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ class AppContainer(context: Context) {
                     sessionProvider = WebViewDouyinSessionProvider(appContext),
                 ),
                 BilibiliParser(client),
+                TikTokParser(client),
             ),
         )
 
