@@ -14,8 +14,8 @@ import com.joma.mediagrab.core.model.Stream
 import com.joma.mediagrab.core.result.AppError
 import com.joma.mediagrab.ui.components.ErrorBanner
 import com.joma.mediagrab.ui.components.VideoCard
+import com.joma.mediagrab.ui.theme.AppTheme
 import com.joma.mediagrab.ui.theme.MediaGrabTheme
-import com.joma.mediagrab.ui.theme.NoirBg
 
 private val previewStream =
     Stream(
@@ -47,7 +47,7 @@ private fun ReadyPreview() {
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(NoirBg)
+                    .background(AppTheme.CYAN.colors.background)
                     .padding(18.dp),
         ) {
             VideoCard(
@@ -74,7 +74,7 @@ private fun DownloadingPreview() {
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(NoirBg)
+                    .background(AppTheme.CYAN.colors.background)
                     .padding(18.dp),
         ) {
             VideoCard(
@@ -101,7 +101,7 @@ private fun DonePreview() {
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(NoirBg)
+                    .background(AppTheme.CYAN.colors.background)
                     .padding(18.dp),
         ) {
             VideoCard(
@@ -128,7 +128,7 @@ private fun FailedPreview() {
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(NoirBg)
+                    .background(AppTheme.CYAN.colors.background)
                     .padding(18.dp),
         ) {
             ErrorBanner(error = AppError.InvalidLink, onRetry = {})

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
@@ -45,6 +46,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -57,14 +61,20 @@ import com.joma.mediagrab.ui.components.ErrorBanner
 import com.joma.mediagrab.ui.components.LinkInput
 import com.joma.mediagrab.ui.components.QualitySheet
 import com.joma.mediagrab.ui.components.VideoCard
+import com.joma.mediagrab.ui.theme.AppTheme
 import com.joma.mediagrab.ui.theme.AppType
-import com.joma.mediagrab.ui.theme.NoirAccent
+import com.joma.mediagrab.ui.theme.LocalAppColors
 import java.util.Locale
 
 private const val GITHUB_URL = "https://github.com/Alistairccc/media-grab-android"
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    currentTheme: AppTheme = AppTheme.CYAN,
+    onThemeSelected: (AppTheme) -> Unit = {},
+) {
+    val colors = LocalAppColors.current
     val link by viewModel.link.collectAsStateWithLifecycle()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -81,6 +91,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
     var showQuality by remember { mutableStateOf(false) }
     var showAbout by remember { mutableStateOf(false) }
+    var showTheme by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         if (state is HomeUiState.Done) {
@@ -99,89 +110,104 @@ fun HomeScreen(viewModel: HomeViewModel) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
-        Column(
+        Box(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .padding(horizontal = 18.dp),
+                    .background(
+                        Brush.verticalGradient(
+                            0f to colors.hero,
+                            0.42f to Color.Transparent,
+                        ),
+                    ),
         ) {
-            AppHeader(onAbout = { showAbout = true })
-            Spacer(Modifier.height(13.dp))
-            LinkInput(
-                link = link,
-                enabled = state !is HomeUiState.Parsing && state !is HomeUiState.Downloading,
-                parseEnabled =
-                    link.isNotBlank() &&
-                        state !is HomeUiState.Parsing &&
-                        state !is HomeUiState.Downloading &&
-                        state !is HomeUiState.Ready &&
-                        state !is HomeUiState.Done,
-                clearMode = state is HomeUiState.Ready || state is HomeUiState.Done,
-                onTextChange = viewModel::onLinkChange,
-                onParse = viewModel::onParse,
-                onClear = viewModel::onClear,
-            )
-            Spacer(Modifier.height(13.dp))
-            Box(Modifier.weight(1f)) {
-                when (val current = state) {
-                    HomeUiState.Idle -> Unit
-                    HomeUiState.Parsing -> ParsingState()
-                    is HomeUiState.Ready ->
-                        VideoCard(
-                            media = current.media,
-                            selectedStream = current.selectedStream,
-                            isDownloading = false,
-                            isDone = false,
-                            percent = 0,
-                            bytesPerSecond = 0,
-                            remainingSeconds = null,
-                            onQualityClick = { showQuality = true },
-                            onSave = {
-                                if (!notificationPermissionGranted) {
-                                    notificationPermission.launch(
-                                        Manifest.permission.POST_NOTIFICATIONS,
-                                    )
-                                }
-                                viewModel.onSave()
-                            },
-                            onCancel = {},
-                        )
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .windowInsetsPadding(WindowInsets.safeDrawing)
+                        .padding(horizontal = 18.dp),
+            ) {
+                AppHeader(
+                    onAbout = { showAbout = true },
+                    onTheme = { showTheme = true },
+                )
+                Spacer(Modifier.height(13.dp))
+                LinkInput(
+                    link = link,
+                    enabled = state !is HomeUiState.Parsing && state !is HomeUiState.Downloading,
+                    parseEnabled =
+                        link.isNotBlank() &&
+                            state !is HomeUiState.Parsing &&
+                            state !is HomeUiState.Downloading &&
+                            state !is HomeUiState.Ready &&
+                            state !is HomeUiState.Done,
+                    clearMode = state is HomeUiState.Ready || state is HomeUiState.Done,
+                    onTextChange = viewModel::onLinkChange,
+                    onParse = viewModel::onParse,
+                    onClear = viewModel::onClear,
+                )
+                Spacer(Modifier.height(13.dp))
+                Box(Modifier.weight(1f)) {
+                    when (val current = state) {
+                        HomeUiState.Idle -> Unit
+                        HomeUiState.Parsing -> ParsingState()
+                        is HomeUiState.Ready ->
+                            VideoCard(
+                                media = current.media,
+                                selectedStream = current.selectedStream,
+                                isDownloading = false,
+                                isDone = false,
+                                percent = 0,
+                                bytesPerSecond = 0,
+                                remainingSeconds = null,
+                                onQualityClick = { showQuality = true },
+                                onSave = {
+                                    if (!notificationPermissionGranted) {
+                                        notificationPermission.launch(
+                                            Manifest.permission.POST_NOTIFICATIONS,
+                                        )
+                                    }
+                                    viewModel.onSave()
+                                },
+                                onCancel = {},
+                            )
 
-                    is HomeUiState.Downloading ->
-                        VideoCard(
-                            media = current.media,
-                            selectedStream = current.selectedStream,
-                            isDownloading = true,
-                            isDone = false,
-                            percent = current.percent,
-                            bytesPerSecond = current.bytesPerSecond,
-                            remainingSeconds = current.remainingSeconds,
-                            onQualityClick = {},
-                            onSave = {},
-                            onCancel = viewModel::onCancel,
-                        )
+                        is HomeUiState.Downloading ->
+                            VideoCard(
+                                media = current.media,
+                                selectedStream = current.selectedStream,
+                                isDownloading = true,
+                                isDone = false,
+                                percent = current.percent,
+                                bytesPerSecond = current.bytesPerSecond,
+                                remainingSeconds = current.remainingSeconds,
+                                onQualityClick = {},
+                                onSave = {},
+                                onCancel = viewModel::onCancel,
+                            )
 
-                    is HomeUiState.Done ->
-                        VideoCard(
-                            media = current.media,
-                            selectedStream = current.selectedStream,
-                            isDownloading = false,
-                            isDone = true,
-                            percent = 100,
-                            bytesPerSecond = 0,
-                            remainingSeconds = null,
-                            onQualityClick = {},
-                            onSave = {},
-                            onCancel = {},
-                        )
+                        is HomeUiState.Done ->
+                            VideoCard(
+                                media = current.media,
+                                selectedStream = current.selectedStream,
+                                isDownloading = false,
+                                isDone = true,
+                                percent = 100,
+                                bytesPerSecond = 0,
+                                remainingSeconds = null,
+                                onQualityClick = {},
+                                onSave = {},
+                                onCancel = {},
+                            )
 
-                    is HomeUiState.Failed ->
-                        ErrorBanner(
-                            error = current.error,
-                            onRetry = viewModel::onRetry,
-                        )
+                        is HomeUiState.Failed ->
+                            ErrorBanner(
+                                error = current.error,
+                                onRetry = viewModel::onRetry,
+                            )
+                    }
                 }
             }
         }
@@ -200,10 +226,25 @@ fun HomeScreen(viewModel: HomeViewModel) {
     if (showAbout) {
         AboutDialog(onDismiss = { showAbout = false })
     }
+
+    if (showTheme) {
+        ThemeDialog(
+            current = currentTheme,
+            onSelect = {
+                onThemeSelected(it)
+                showTheme = false
+            },
+            onDismiss = { showTheme = false },
+        )
+    }
 }
 
 @Composable
-private fun AppHeader(onAbout: () -> Unit) {
+private fun AppHeader(
+    onAbout: () -> Unit,
+    onTheme: () -> Unit,
+) {
+    val colors = LocalAppColors.current
     var expanded by remember { mutableStateOf(false) }
     Row(
         modifier =
@@ -221,7 +262,7 @@ private fun AppHeader(onAbout: () -> Unit) {
         Box(
             Modifier
                 .size(5.dp)
-                .background(NoirAccent, CircleShape),
+                .background(colors.primary, CircleShape),
         )
         Spacer(Modifier.weight(1f))
         Box {
@@ -241,6 +282,13 @@ private fun AppHeader(onAbout: () -> Unit) {
                 onDismissRequest = { expanded = false },
             ) {
                 DropdownMenuItem(
+                    text = { Text(stringResource(R.string.theme), style = AppType.meta) },
+                    onClick = {
+                        expanded = false
+                        onTheme()
+                    },
+                )
+                DropdownMenuItem(
                     text = { Text(stringResource(R.string.about), style = AppType.meta) },
                     onClick = {
                         expanded = false
@@ -254,13 +302,14 @@ private fun AppHeader(onAbout: () -> Unit) {
 
 @Composable
 private fun ParsingState() {
+    val colors = LocalAppColors.current
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         CircularProgressIndicator(
-            color = NoirAccent,
+            color = colors.primary,
             strokeWidth = 2.dp,
             modifier = Modifier.size(32.dp),
         )
@@ -275,6 +324,7 @@ private fun ParsingState() {
 
 @Composable
 private fun AboutDialog(onDismiss: () -> Unit) {
+    val colors = LocalAppColors.current
     val uriHandler = LocalUriHandler.current
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -309,13 +359,13 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                         Text(
                             text = stringResource(R.string.github_repo),
                             style = AppType.meta,
-                            color = NoirAccent,
+                            color = colors.primary,
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
                             text = "↗",
                             style = AppType.meta,
-                            color = NoirAccent,
+                            color = colors.primary,
                         )
                     }
                     Text(
@@ -323,6 +373,70 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                         style = AppType.monoSm,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.close))
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+    )
+}
+
+@Composable
+private fun ThemeDialog(
+    current: AppTheme,
+    onSelect: (AppTheme) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.theme)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                AppTheme.entries.forEach { theme ->
+                    val colors = theme.colors
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable { onSelect(theme) }
+                                .padding(horizontal = 8.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            listOf(
+                                colors.background,
+                                colors.surface,
+                                colors.primary,
+                                colors.secondary,
+                            ).forEach { color ->
+                                Box(
+                                    Modifier
+                                        .size(14.dp)
+                                        .clip(CircleShape)
+                                        .background(color),
+                                )
+                            }
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(theme.labelRes),
+                            style = AppType.meta,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Spacer(Modifier.weight(1f))
+                        if (theme == current) {
+                            Text(
+                                text = "✓",
+                                style = AppType.meta,
+                                color = colors.primary,
+                            )
+                        }
+                    }
                 }
             }
         },

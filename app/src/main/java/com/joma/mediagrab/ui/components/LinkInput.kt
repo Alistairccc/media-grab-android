@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -38,8 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joma.mediagrab.R
 import com.joma.mediagrab.ui.theme.AppType
-import com.joma.mediagrab.ui.theme.NoirAccent
-import com.joma.mediagrab.ui.theme.NoirAccentDeep
+import com.joma.mediagrab.ui.theme.LocalAppColors
 
 const val LINK_INPUT_TAG = "link_input"
 const val PARSE_BUTTON_TAG = "parse_button"
@@ -55,6 +53,7 @@ fun LinkInput(
     onClear: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val colors = LocalAppColors.current
     val keyboard = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val submit = {
@@ -100,7 +99,7 @@ fun LinkInput(
             enabled = enabled,
             singleLine = true,
             textStyle = textStyle,
-            cursorBrush = SolidColor(NoirAccent),
+            cursorBrush = SolidColor(colors.primary),
             keyboardOptions =
                 KeyboardOptions(
                     keyboardType = KeyboardType.Uri,
@@ -139,8 +138,8 @@ fun LinkInput(
                     )
                 } else {
                     ButtonDefaults.buttonColors(
-                        containerColor = NoirAccentDeep,
-                        contentColor = Color.White,
+                        containerColor = colors.primaryDeep,
+                        contentColor = colors.onPrimaryDeep,
                         disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

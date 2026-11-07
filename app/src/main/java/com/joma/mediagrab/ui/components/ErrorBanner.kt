@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.joma.mediagrab.R
 import com.joma.mediagrab.core.result.AppError
 import com.joma.mediagrab.ui.theme.AppType
-import com.joma.mediagrab.ui.theme.NoirAccent
+import com.joma.mediagrab.ui.theme.LocalAppColors
 
 @Composable
 fun ErrorBanner(
@@ -25,11 +25,12 @@ fun ErrorBanner(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val colors = LocalAppColors.current
     Row(
         modifier =
             modifier
                 .fillMaxWidth()
-                .background(NoirAccent.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
+                .background(colors.primary.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
                 .padding(start = 12.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -46,7 +47,7 @@ fun ErrorBanner(
             Text(
                 text = stringResource(R.string.retry),
                 style = AppType.label,
-                color = NoirAccent,
+                color = colors.primary,
             )
         }
     }

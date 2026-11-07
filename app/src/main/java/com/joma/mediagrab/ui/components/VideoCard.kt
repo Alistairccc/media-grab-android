@@ -50,9 +50,7 @@ import com.joma.mediagrab.core.model.Platform
 import com.joma.mediagrab.core.model.Stream
 import com.joma.mediagrab.core.util.Formatters
 import com.joma.mediagrab.ui.theme.AppType
-import com.joma.mediagrab.ui.theme.NoirAccent
-import com.joma.mediagrab.ui.theme.NoirAccent2
-import com.joma.mediagrab.ui.theme.NoirTrack
+import com.joma.mediagrab.ui.theme.LocalAppColors
 
 @Composable
 fun VideoCard(
@@ -142,6 +140,7 @@ private fun CoverArt(
     media: MediaInfo,
     modifier: Modifier = Modifier,
 ) {
+    val colors = LocalAppColors.current
     val context = LocalContext.current
     val cover =
         remember(media.coverUrl, media.platform) {
@@ -156,7 +155,11 @@ private fun CoverArt(
         modifier =
             modifier.background(
                 Brush.linearGradient(
-                    listOf(Color(0xFF2B1B44), Color(0xFF140F24), Color(0xFF0B0B11)),
+                    listOf(
+                        colors.primaryDeep.copy(alpha = 0.55f),
+                        colors.surface,
+                        colors.background,
+                    ),
                 ),
             ),
     ) {
@@ -164,7 +167,7 @@ private fun CoverArt(
             Modifier
                 .size(150.dp)
                 .offset(x = 110.dp, y = (-30).dp)
-                .background(NoirAccent.copy(alpha = 0.28f), CircleShape),
+                .background(colors.primary.copy(alpha = 0.28f), CircleShape),
         )
         if (cover != null) {
             AsyncImage(
@@ -298,6 +301,7 @@ private fun QualityRow(
 
 @Composable
 private fun SaveButton(onSave: () -> Unit) {
+    val colors = LocalAppColors.current
     Box(
         modifier =
             Modifier
@@ -305,20 +309,21 @@ private fun SaveButton(onSave: () -> Unit) {
                 .height(50.dp)
                 .shadow(10.dp, RoundedCornerShape(14.dp))
                 .clip(RoundedCornerShape(14.dp))
-                .background(Brush.linearGradient(listOf(NoirAccent, Color(0xFFFF5C7A))))
+                .background(Brush.linearGradient(listOf(colors.primary, colors.secondary)))
                 .clickable(onClick = onSave),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = stringResource(R.string.save),
             style = AppType.button,
-            color = Color.White,
+            color = colors.onPrimary,
         )
     }
 }
 
 @Composable
 private fun SavedStatus() {
+    val colors = LocalAppColors.current
     Row(
         modifier =
             Modifier
@@ -330,7 +335,7 @@ private fun SavedStatus() {
         Icon(
             imageVector = Icons.Default.Check,
             contentDescription = null,
-            tint = NoirAccent2,
+            tint = colors.secondary,
             modifier = Modifier.size(14.dp),
         )
         Spacer(Modifier.width(8.dp))
@@ -349,6 +354,7 @@ private fun DownloadProgress(
     remainingSeconds: Long?,
     onCancel: () -> Unit,
 ) {
+    val colors = LocalAppColors.current
     Column(
         modifier = Modifier.padding(top = 2.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -371,13 +377,13 @@ private fun DownloadProgress(
                 .fillMaxWidth()
                 .height(6.dp)
                 .clip(CircleShape)
-                .background(NoirTrack),
+                .background(colors.track),
         ) {
             Box(
                 Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(percent.coerceIn(0, 100) / 100f)
-                    .background(Brush.horizontalGradient(listOf(NoirAccent, NoirAccent2))),
+                    .background(Brush.horizontalGradient(listOf(colors.primary, colors.secondary))),
             )
         }
         Row(verticalAlignment = Alignment.CenterVertically) {

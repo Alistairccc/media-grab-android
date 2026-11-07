@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.joma.mediagrab.ui.home.HomeScreen
 import com.joma.mediagrab.ui.home.HomeViewModel
@@ -20,7 +22,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val container = (application as MediaGrabApp).container
         setContent {
-            MediaGrabTheme {
+            val theme by container.themePreference.theme.collectAsStateWithLifecycle()
+            MediaGrabTheme(theme = theme) {
                 val viewModel: HomeViewModel =
                     viewModel(
                         factory =
@@ -29,7 +32,11 @@ class MainActivity : ComponentActivity() {
                                 container.downloadManager,
                             ),
                     )
-                HomeScreen(viewModel = viewModel)
+                HomeScreen(
+                    viewModel = viewModel,
+                    currentTheme = theme,
+                    onThemeSelected = container.themePreference::select,
+                )
             }
         }
     }

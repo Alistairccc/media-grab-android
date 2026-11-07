@@ -7,6 +7,7 @@ import com.joma.mediagrab.core.network.HttpClientFactory
 import com.joma.mediagrab.data.MediaRepository
 import com.joma.mediagrab.data.download.MediaStoreSink
 import com.joma.mediagrab.data.download.VideoDownloader
+import com.joma.mediagrab.data.settings.ThemePreference
 import com.joma.mediagrab.download.DownloadManager
 import com.joma.mediagrab.download.DownloadService
 import com.joma.mediagrab.download.PendingMediaCleaner
@@ -37,6 +38,8 @@ class AppContainer(context: Context) {
         )
 
     val repository: MediaRepository = MediaRepository(parser)
+
+    val themePreference = ThemePreference(appContext)
 
     private val downloadScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
