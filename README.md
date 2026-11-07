@@ -17,6 +17,16 @@
 
 MediaGrab is a focused, lightweight Android video saver for **single videos** from Douyin, Bilibili, and TikTok. It does not sign in, read account data, or control your account. It does one thing: put videos you have the right to keep into your system gallery.
 
+## Preview
+
+<p align="center">
+  <img src="docs/images/demo-home.png" width="31%" alt="Empty home screen">
+  <img src="docs/images/demo-ready.png" width="31%" alt="Parsed Douyin video ready to save">
+  <img src="docs/images/demo-done.png" width="31%" alt="Video saved to the gallery">
+</p>
+
+<p align="center"><em>Empty → Parsed → Saved. Demo video: 苏洛江南 on Douyin.</em></p>
+
 ## Three steps
 
 1. **Copy** a video share link from Douyin, Bilibili, or TikTok.

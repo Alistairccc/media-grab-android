@@ -17,6 +17,16 @@
 
 MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音、哔哩哔哩和 TikTok 的**单条视频**。不登录、不读取账号数据、不接管账号，只做一件事：把你有权保存的视频放进系统相册。
 
+## 预览
+
+<p align="center">
+  <img src="docs/images/demo-home.png" width="31%" alt="首页空态">
+  <img src="docs/images/demo-ready.png" width="31%" alt="抖音视频解析完成">
+  <img src="docs/images/demo-done.png" width="31%" alt="视频已保存到相册">
+</p>
+
+<p align="center"><em>输入 → 解析 → 保存。演示内容：抖音 @苏洛江南</em></p>
+
 ## 三步完成
 
 1. **复制**：在抖音、B 站或 TikTok 复制视频分享链接
