@@ -36,3 +36,4 @@ signing.properties
 # ---- Logs / temp ----
 *.log
 *.hprof
+temp
