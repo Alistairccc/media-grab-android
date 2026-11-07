@@ -6,12 +6,27 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-07
+
 ### Added
 
+- Four selectable dark themes (Aloha Cyan, Midnight Blue, Violet, Warm Ember)
+  with a picker in the overflow menu; the choice is persisted locally and
+  applied on launch.
 - TikTok single-video parsing through the public video page, covering
   `/video/`, `/v/`, and `/embed/` links plus `vm.tiktok.com` and
   `vt.tiktok.com` short links. The visitor session cookies issued by the page
   request are forwarded to the media CDN, which rejects cookie-less downloads.
+
+### Changed
+
+- All UI surfaces, buttons, progress bars, and fallback covers now follow the
+  selected theme instead of the fixed NOIR palette.
+
+### Fixed
+
+- The parse button text now meets WCAG AA contrast on every theme via a
+  dedicated `onPrimaryDeep` token.
 
 ## [0.3.2] - 2026-11-04
 
