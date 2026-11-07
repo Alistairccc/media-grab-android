@@ -22,9 +22,11 @@ import com.joma.mediagrab.ui.components.PARSE_BUTTON_TAG
 import com.joma.mediagrab.ui.components.VideoCard
 import com.joma.mediagrab.ui.home.HomeScreen
 import com.joma.mediagrab.ui.home.HomeViewModel
+import com.joma.mediagrab.ui.theme.AppTheme
 import com.joma.mediagrab.ui.theme.MediaGrabTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -60,7 +62,7 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("输入抖音 / B站链接").assertExists()
+        composeRule.onNodeWithText("输入抖音 / B站 / TikTok 链接").assertExists()
         assertTrue(
             composeRule
                 .onAllNodesWithText("复制分享链接，或直接输入链接")
@@ -91,6 +93,26 @@ class HomeScreenTest {
         composeRule
             .onNodeWithText("github.com/Alistairccc/media-grab-android")
             .assertExists()
+    }
+
+    @Test
+    fun themePickerReportsTheSelectedTheme() {
+        var selected: AppTheme? = null
+        composeRule.setContent {
+            MediaGrabTheme {
+                HomeScreen(
+                    viewModel = viewModel(),
+                    currentTheme = AppTheme.CYAN,
+                    onThemeSelected = { selected = it },
+                )
+            }
+        }
+
+        composeRule.onNodeWithContentDescription("更多").performClick()
+        composeRule.onNodeWithText("主题").performClick()
+        composeRule.onNodeWithText("午夜蓝").performClick()
+
+        assertEquals(AppTheme.BLUE, selected)
     }
 
     @Test
@@ -144,7 +166,7 @@ class HomeScreenTest {
         composeRule.onNodeWithText("清空").assertExists()
         composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
 
-        composeRule.onNodeWithText("输入抖音 / B站链接").assertExists()
+        composeRule.onNodeWithText("输入抖音 / B站 / TikTok 链接").assertExists()
         assertTrue(
             composeRule
                 .onAllNodesWithText("凌晨四点的城市，原来是这样一点点苏醒的｜4K 延时记录")
