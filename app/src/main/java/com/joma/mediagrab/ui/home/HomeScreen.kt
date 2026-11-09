@@ -57,6 +57,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.joma.mediagrab.BuildConfig
 import com.joma.mediagrab.R
+import com.joma.mediagrab.data.settings.AppLanguage
 import com.joma.mediagrab.ui.components.ErrorBanner
 import com.joma.mediagrab.ui.components.LinkInput
 import com.joma.mediagrab.ui.components.QualitySheet
@@ -73,6 +74,8 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     currentTheme: AppTheme = AppTheme.CYAN,
     onThemeSelected: (AppTheme) -> Unit = {},
+    currentLanguage: AppLanguage = AppLanguage.SYSTEM,
+    onLanguageSelected: (AppLanguage) -> Unit = {},
 ) {
     val colors = LocalAppColors.current
     val link by viewModel.link.collectAsStateWithLifecycle()
@@ -92,6 +95,7 @@ fun HomeScreen(
     var showQuality by remember { mutableStateOf(false) }
     var showAbout by remember { mutableStateOf(false) }
     var showTheme by remember { mutableStateOf(false) }
+    var showLanguage by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         if (state is HomeUiState.Done) {
@@ -132,6 +136,7 @@ fun HomeScreen(
                 AppHeader(
                     onAbout = { showAbout = true },
                     onTheme = { showTheme = true },
+                    onLanguage = { showLanguage = true },
                 )
                 Spacer(Modifier.height(13.dp))
                 LinkInput(
@@ -237,12 +242,24 @@ fun HomeScreen(
             onDismiss = { showTheme = false },
         )
     }
+
+    if (showLanguage) {
+        LanguageDialog(
+            current = currentLanguage,
+            onSelect = {
+                onLanguageSelected(it)
+                showLanguage = false
+            },
+            onDismiss = { showLanguage = false },
+        )
+    }
 }
 
 @Composable
 private fun AppHeader(
     onAbout: () -> Unit,
     onTheme: () -> Unit,
+    onLanguage: () -> Unit,
 ) {
     val colors = LocalAppColors.current
     var expanded by remember { mutableStateOf(false) }
@@ -286,6 +303,13 @@ private fun AppHeader(
                     onClick = {
                         expanded = false
                         onTheme()
+                    },
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.language), style = AppType.meta) },
+                    onClick = {
+                        expanded = false
+                        onLanguage()
                     },
                 )
                 DropdownMenuItem(
@@ -373,6 +397,54 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                         style = AppType.monoSm,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.close))
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+    )
+}
+
+@Composable
+private fun LanguageDialog(
+    current: AppLanguage,
+    onSelect: (AppLanguage) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val colors = LocalAppColors.current
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.language)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                AppLanguage.entries.forEach { language ->
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable { onSelect(language) }
+                                .padding(horizontal = 8.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(language.labelRes),
+                            style = AppType.meta,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Spacer(Modifier.weight(1f))
+                        if (language == current) {
+                            Text(
+                                text = "✓",
+                                style = AppType.meta,
+                                color = colors.primary,
+                            )
+                        }
+                    }
                 }
             }
         },

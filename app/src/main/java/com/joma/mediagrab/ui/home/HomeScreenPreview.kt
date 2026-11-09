@@ -19,9 +19,10 @@ import com.joma.mediagrab.ui.theme.MediaGrabTheme
 
 private val previewStream =
     Stream(
-        qualityLabel = "720P · 无水印",
+        qualityLabel = "720P",
         url = "https://example.com/720.mp4",
         sizeBytes = 12_400_000,
+        watermarkFree = true,
     )
 
 private val previewMedia =

@@ -29,9 +29,10 @@ class FakeParser : Parser {
                 streams =
                     listOf(
                         Stream(
-                            qualityLabel = "720P · 无水印",
+                            qualityLabel = "720P",
                             url = "https://example.com/720.mp4",
                             sizeBytes = 12_400_000,
+                            watermarkFree = true,
                         ),
                         Stream(
                             qualityLabel = "480P",

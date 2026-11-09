@@ -41,7 +41,7 @@ object DownloadNotification {
             is DownloadState.Running -> {
                 val percent = state.progress.percent.coerceIn(0, 100)
                 builder
-                    .setContentTitle(state.media.title)
+                    .setContentTitle(state.media.title.ifBlank { context.getString(R.string.app_name) })
                     .setContentText(
                         context.getString(
                             R.string.notification_progress,
@@ -61,13 +61,13 @@ object DownloadNotification {
             is DownloadState.Completed ->
                 builder
                     .setContentTitle(context.getString(R.string.notification_done))
-                    .setContentText(state.media.title)
+                    .setContentText(state.media.title.ifBlank { context.getString(R.string.app_name) })
                     .setAutoCancel(true)
 
             is DownloadState.Failed ->
                 builder
                     .setContentTitle(context.getString(R.string.notification_failed))
-                    .setContentText(state.media.title)
+                    .setContentText(state.media.title.ifBlank { context.getString(R.string.app_name) })
                     .setAutoCancel(true)
 
             is DownloadState.Cancelled, DownloadState.Idle ->

@@ -102,7 +102,7 @@ fun VideoCard(
                 )
             }
             Text(
-                text = media.title,
+                text = mediaTitle(media),
                 style = AppType.title,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 2,
@@ -284,7 +284,7 @@ private fun QualityRow(
         )
         Spacer(Modifier.weight(1f))
         Text(
-            text = selectedStream.qualityLabel,
+            text = streamLabel(selectedStream),
             style = AppType.value,
             color = MaterialTheme.colorScheme.onSurface,
         )

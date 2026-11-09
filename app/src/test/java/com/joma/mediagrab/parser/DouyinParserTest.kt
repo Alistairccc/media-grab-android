@@ -73,7 +73,8 @@ class DouyinParserTest {
             assertEquals("https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/cover.jpeg", media.coverUrl)
 
             val stream = media.streams.single()
-            assertEquals("1080P · 无水印", stream.qualityLabel)
+            assertEquals("1080P", stream.qualityLabel)
+            assertTrue(stream.watermarkFree)
             assertEquals("https://v26-weba.douyinvod.com/video/tos/example.mp4?a=6383", stream.url)
             assertEquals(20_117_456L, stream.sizeBytes)
             assertEquals(DouyinSession.DEFAULT_USER_AGENT, stream.headers["User-Agent"])

@@ -64,7 +64,7 @@ class HomeViewModelTest {
             val state = viewModel.uiState.value
             assertTrue(state is HomeUiState.Ready)
             assertEquals(
-                "720P · 无水印",
+                "720P",
                 (state as HomeUiState.Ready).selectedStream.qualityLabel,
             )
         }
@@ -185,7 +185,7 @@ class HomeViewModelTest {
             val state = viewModel.uiState.value
             assertTrue(state is HomeUiState.Ready)
             assertEquals(
-                "720P · 无水印",
+                "720P",
                 (state as HomeUiState.Ready).selectedStream.qualityLabel,
             )
         }

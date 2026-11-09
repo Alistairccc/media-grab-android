@@ -62,7 +62,7 @@ fun QualitySheet(
                 ) {
                     Column(Modifier.weight(1f)) {
                         Text(
-                            text = stream.qualityLabel,
+                            text = streamLabel(stream),
                             style = AppType.body,
                             color = MaterialTheme.colorScheme.onSurface,
                         )

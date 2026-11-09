@@ -1,12 +1,14 @@
 package com.joma.mediagrab.download
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.SystemClock
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
 import com.joma.mediagrab.MediaGrabApp
+import com.joma.mediagrab.data.settings.LocaleContextWrapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,6 +22,10 @@ class DownloadService : Service() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var collecting = false
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase))
+    }
 
     override fun onCreate() {
         super.onCreate()

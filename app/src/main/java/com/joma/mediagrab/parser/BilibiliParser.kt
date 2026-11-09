@@ -91,7 +91,7 @@ class BilibiliParser(
             val owner = view["owner"] as? JsonObject
             val dimension = view["dimension"] as? JsonObject
             val quality = play["quality"]?.jsonPrimitive?.intOrNull
-            val title = view["title"]?.jsonPrimitive?.contentOrNull.orEmpty().ifEmpty { "B站视频" }
+            val title = view["title"]?.jsonPrimitive?.contentOrNull.orEmpty()
             AppResult.Ok(
                 MediaInfo(
                     platform = Platform.BILIBILI,
@@ -108,7 +108,7 @@ class BilibiliParser(
                     streams =
                         listOf(
                             Stream(
-                                qualityLabel = QUALITY_LABELS[quality] ?: "视频",
+                                qualityLabel = quality?.let { QUALITY_LABELS[it] }.orEmpty(),
                                 url = playUrl,
                                 headers =
                                     mapOf(

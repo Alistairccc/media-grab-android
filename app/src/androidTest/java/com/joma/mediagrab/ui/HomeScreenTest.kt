@@ -10,10 +10,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.joma.mediagrab.R
 import com.joma.mediagrab.core.model.MediaInfo
 import com.joma.mediagrab.core.model.Platform
 import com.joma.mediagrab.core.model.Stream
 import com.joma.mediagrab.data.MediaRepository
+import com.joma.mediagrab.data.settings.AppLanguage
 import com.joma.mediagrab.download.DownloadController
 import com.joma.mediagrab.download.DownloadState
 import com.joma.mediagrab.parser.FakeParser
@@ -36,6 +39,8 @@ import org.junit.runner.RunWith
 class HomeScreenTest {
     @get:Rule
     val composeRule = createComposeRule()
+
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
     private val downloadController =
         object : DownloadController {
@@ -62,7 +67,7 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("输入抖音 / B站 / TikTok 链接").assertExists()
+        composeRule.onNodeWithText(context.getString(R.string.input_hint)).assertExists()
         assertTrue(
             composeRule
                 .onAllNodesWithText("复制分享链接，或直接输入链接")
@@ -86,10 +91,10 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithContentDescription("更多").performClick()
-        composeRule.onNodeWithText("关于").performClick()
+        composeRule.onNodeWithContentDescription(context.getString(R.string.more)).performClick()
+        composeRule.onNodeWithText(context.getString(R.string.about)).performClick()
 
-        composeRule.onNodeWithText("GitHub 仓库").assertExists()
+        composeRule.onNodeWithText(context.getString(R.string.github_repo)).assertExists()
         composeRule
             .onNodeWithText("github.com/Alistairccc/media-grab-android")
             .assertExists()
@@ -108,11 +113,31 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithContentDescription("更多").performClick()
-        composeRule.onNodeWithText("主题").performClick()
-        composeRule.onNodeWithText("午夜蓝").performClick()
+        composeRule.onNodeWithContentDescription(context.getString(R.string.more)).performClick()
+        composeRule.onNodeWithText(context.getString(R.string.theme)).performClick()
+        composeRule.onNodeWithText(context.getString(R.string.theme_blue)).performClick()
 
         assertEquals(AppTheme.BLUE, selected)
+    }
+
+    @Test
+    fun languagePickerReportsTheSelectedLanguage() {
+        var selected: AppLanguage? = null
+        composeRule.setContent {
+            MediaGrabTheme {
+                HomeScreen(
+                    viewModel = viewModel(),
+                    currentLanguage = AppLanguage.SYSTEM,
+                    onLanguageSelected = { selected = it },
+                )
+            }
+        }
+
+        composeRule.onNodeWithContentDescription(context.getString(R.string.more)).performClick()
+        composeRule.onNodeWithText(context.getString(R.string.language)).performClick()
+        composeRule.onNodeWithText(context.getString(R.string.language_english)).performClick()
+
+        assertEquals(AppLanguage.ENGLISH, selected)
     }
 
     @Test
@@ -163,10 +188,10 @@ class HomeScreenTest {
         composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
         waitForResultCard()
 
-        composeRule.onNodeWithText("清空").assertExists()
+        composeRule.onNodeWithText(context.getString(R.string.clear)).assertExists()
         composeRule.onNodeWithTag(PARSE_BUTTON_TAG).performClick()
 
-        composeRule.onNodeWithText("输入抖音 / B站 / TikTok 链接").assertExists()
+        composeRule.onNodeWithText(context.getString(R.string.input_hint)).assertExists()
         assertTrue(
             composeRule
                 .onAllNodesWithText("凌晨四点的城市，原来是这样一点点苏醒的｜4K 延时记录")
@@ -177,7 +202,12 @@ class HomeScreenTest {
 
     @Test
     fun doneCardShowsOnlyTheSavedMessage() {
-        val stream = Stream(qualityLabel = "720P · 无水印", url = "https://example.com/v.mp4")
+        val stream =
+            Stream(
+                qualityLabel = "720P",
+                url = "https://example.com/v.mp4",
+                watermarkFree = true,
+            )
         val media =
             MediaInfo(
                 platform = Platform.DOUYIN,
@@ -203,9 +233,45 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("已保存完成").assertExists()
+        composeRule.onNodeWithText(context.getString(R.string.saved)).assertExists()
+        composeRule
+            .onNodeWithText("720P · ${context.getString(R.string.no_watermark)}")
+            .assertExists()
         assertTrue(composeRule.onAllNodesWithText("查看").fetchSemanticsNodes().isEmpty())
         assertTrue(composeRule.onAllNodesWithText("打开相册").fetchSemanticsNodes().isEmpty())
+    }
+
+    @Test
+    fun emptyTitleFallsBackToTheLocalizedPlatformName() {
+        val stream = Stream(qualityLabel = "720P", url = "https://example.com/v.mp4")
+        val media =
+            MediaInfo(
+                platform = Platform.DOUYIN,
+                title = "",
+                author = "",
+                streams = listOf(stream),
+            )
+
+        composeRule.setContent {
+            MediaGrabTheme {
+                VideoCard(
+                    media = media,
+                    selectedStream = stream,
+                    isDownloading = false,
+                    isDone = false,
+                    percent = 0,
+                    bytesPerSecond = 0,
+                    remainingSeconds = null,
+                    onQualityClick = {},
+                    onSave = {},
+                    onCancel = {},
+                )
+            }
+        }
+
+        composeRule
+            .onNodeWithText(context.getString(R.string.fallback_title_douyin))
+            .assertExists()
     }
 
     private fun waitForResultCard() {

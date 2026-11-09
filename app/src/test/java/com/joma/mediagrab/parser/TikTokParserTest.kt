@@ -56,6 +56,7 @@ class TikTokParserTest {
 
             val stream = media.streams.single()
             assertEquals("720P", stream.qualityLabel)
+            assertTrue(stream.watermarkFree)
             assertEquals("https://v16-webapp-prime.tiktok.com/video/tos/example.mp4", stream.url)
             assertTrue(stream.headers["User-Agent"].orEmpty().startsWith("Mozilla/5.0 (iPhone"))
             assertEquals(

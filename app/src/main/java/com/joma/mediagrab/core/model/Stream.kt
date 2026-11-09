@@ -6,4 +6,5 @@ data class Stream(
     val headers: Map<String, String> = emptyMap(),
     val mime: String = "video/mp4",
     val sizeBytes: Long? = null,
+    val watermarkFree: Boolean = false,
 )

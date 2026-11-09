@@ -124,7 +124,7 @@ class TikTokParser(
             if (width != null && height != null) {
                 "${minOf(width, height)}P"
             } else {
-                "视频"
+                ""
             }
         val author =
             (item["author"] as? JsonObject)
@@ -143,7 +143,7 @@ class TikTokParser(
         return AppResult.Ok(
             MediaInfo(
                 platform = Platform.TIKTOK,
-                title = title.ifEmpty { "TikTok视频" },
+                title = title,
                 author = author,
                 coverUrl = video["cover"]?.jsonPrimitive?.contentOrNull,
                 durationMs = video["duration"]?.jsonPrimitive?.longOrNull?.times(1000) ?: 0L,
@@ -155,6 +155,7 @@ class TikTokParser(
                             qualityLabel = qualityLabel,
                             url = playUrl,
                             headers = headers,
+                            watermarkFree = true,
                         ),
                     ),
             ),

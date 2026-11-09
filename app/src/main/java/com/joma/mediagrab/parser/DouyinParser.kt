@@ -170,9 +170,9 @@ class DouyinParser(
         val height = video["height"]?.jsonPrimitive?.intOrNull
         val qualityLabel =
             if (width != null && height != null) {
-                "${minOf(width, height)}P · 无水印"
+                "${minOf(width, height)}P"
             } else {
-                "无水印"
+                ""
             }
         val author =
             (detail["author"] as? JsonObject)
@@ -185,7 +185,7 @@ class DouyinParser(
         return AppResult.Ok(
             MediaInfo(
                 platform = Platform.DOUYIN,
-                title = title.ifEmpty { "抖音视频" },
+                title = title,
                 author = author,
                 coverUrl = (video["cover"] as? JsonObject)?.let(::firstUrl),
                 durationMs = video["duration"]?.jsonPrimitive?.longOrNull ?: 0L,
@@ -202,6 +202,7 @@ class DouyinParser(
                                     "Referer" to "https://www.douyin.com/",
                                 ),
                             sizeBytes = playAddr["data_size"]?.jsonPrimitive?.longOrNull,
+                            watermarkFree = true,
                         ),
                     ),
             ),
