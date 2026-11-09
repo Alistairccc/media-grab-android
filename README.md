@@ -45,6 +45,7 @@ Downloads continue in the background if you switch apps. When finished, the file
 - **Background downloads**: foreground service with progress notifications and cancellation.
 - **Real covers**: the video thumbnail is loaded after parsing; falls back to a theme gradient when loading fails.
 - **Theme switching**: four color themes (Aloha Cyan, Midnight Blue, Violet, Warm Ember) in the overflow menu; the choice is saved locally.
+- **Language switching**: English and Simplified Chinese in the overflow menu. The app follows the system language by default, falling back to English; the choice is saved locally.
 - **About page**: version, open-source license, and the GitHub repository.
 - **Clean**: no ads, no sign-in, no accounts, no data uploads.
 
@@ -86,9 +87,9 @@ No. MediaGrab handles one video at a time so it does not become a bulk scraping 
 
 ## Download
 
-Get the latest APK from [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) (current `v0.4.0`, Android 10+).
+Get the latest APK from [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) (current `v0.5.0`, Android 10+).
 
-Direct download: [MediaGrab-0.4.0.apk](https://github.com/Alistairccc/media-grab-android/releases/download/v0.4.0/MediaGrab-0.4.0.apk)
+Direct download: [MediaGrab-0.5.0.apk](https://github.com/Alistairccc/media-grab-android/releases/download/v0.5.0/MediaGrab-0.5.0.apk)
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
 

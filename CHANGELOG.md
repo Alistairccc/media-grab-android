@@ -6,6 +6,17 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-09
+
+### Added
+
+- In-app language switching (Follow system / English / 中文) in the overflow
+  menu. Fresh installs follow the system language and fall back to English
+  when it is not Chinese; the choice is saved locally and applied on launch.
+- English UI resources, with Chinese moved to `values-zh`. Parser-generated
+  quality labels and fallback titles are localized in the UI, so the English
+  build no longer shows Chinese labels such as `无水印`.
+
 ## [0.4.0] - 2026-11-07
 
 ### Added

@@ -45,6 +45,7 @@ MediaGrab 是一个专注、轻量的 Android 视频保存工具，支持抖音�
 - **后台下载**：前台服务 + 通知进度，支持取消
 - **真实封面**：解析后显示视频封面，加载失败时回退当前主题的渐变占位
 - **主题切换**：右上角菜单提供 Aloha 青、午夜蓝、紫罗兰、暖橙四套配色，选择后本地保存
+- **语言切换**：右上角菜单提供 English 与简体中文；默认跟随系统语言，非中文系统回退英文，选择后本地保存
 - **关于页**：版本、开源许可与 GitHub 仓库入口
 - **干净**：无广告、无登录、无账号体系、无数据上传
 
@@ -86,9 +87,9 @@ TikTok 不向所有地区提供公开数据，部分地区或网络会返回限�
 
 ## 下载
 
-从 [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) 下载最新 APK（当前 `v0.4.0`，Android 10+）。
+从 [Releases](https://github.com/Alistairccc/media-grab-android/releases/latest) 下载最新 APK（当前 `v0.5.0`，Android 10+）。
 
-直接下载：[MediaGrab-0.4.0.apk](https://github.com/Alistairccc/media-grab-android/releases/download/v0.4.0/MediaGrab-0.4.0.apk)
+直接下载：[MediaGrab-0.5.0.apk](https://github.com/Alistairccc/media-grab-android/releases/download/v0.5.0/MediaGrab-0.5.0.apk)
 
 版本变更见 [CHANGELOG.md](CHANGELOG.md)。
 
