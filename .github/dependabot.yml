@@ -4,7 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    # Paused until the Gradle 9 / AGP 9 / compileSdk 37 migration.
+    open-pull-requests-limit: 0
     groups:
       androidx:
         patterns:
@@ -21,6 +22,12 @@ updates:
         update-types:
           - "version-update:semver-major"
       - dependency-name: "com.android.tools.build:gradle"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "com.android.application"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "com.android.library"
         update-types:
           - "version-update:semver-major"
       - dependency-name: "gradle"
